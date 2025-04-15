@@ -1,9 +1,10 @@
-package com.example.eatclean.viewmodel
+package com.example.eatclean.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.eatclean.repository.FoodRepository
 import com.example.eatclean.repository.NutritionRepository
+import com.example.eatclean.viewmodel.FollowScreenViewModel
 
 class FollowScreenViewModelFactory(
     private val nutritionRepository: NutritionRepository,

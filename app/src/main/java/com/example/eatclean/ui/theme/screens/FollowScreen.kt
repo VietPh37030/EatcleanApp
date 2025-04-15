@@ -3,7 +3,6 @@ package com.example.eatclean.ui.screens
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -27,10 +26,12 @@ import com.example.eatclean.R
 import com.example.eatclean.repository.FoodRepository
 import com.example.eatclean.repository.NutritionRepository
 import com.example.eatclean.ui.components.CircularNutri
+import com.example.eatclean.ui.components.Header
 import com.example.eatclean.ui.theme.EatcleanTheme
+import com.example.eatclean.ui.theme.components.CalendarHeatmap
 import com.example.eatclean.ui.theme.components.NutritionItem
 import com.example.eatclean.viewmodel.FollowScreenViewModel
-import com.example.eatclean.viewmodel.FollowScreenViewModelFactory
+import com.example.eatclean.viewmodels.FollowScreenViewModelFactory
 import java.time.LocalDate
 
 class FollowScreen : ComponentActivity() {
@@ -68,98 +69,90 @@ fun FollowScreenContent(
             .verticalScroll(androidx.compose.foundation.rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Header
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "EatClean",
-                fontSize = 17.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Green
-            )
-            Button(
-                onClick = {},
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFF97316),
-                    contentColor = Color.White
-                ),
-                modifier = Modifier.clip(RoundedCornerShape(20.dp))
-            ) {
-                Text(text = "Dùng thử miễn phí", fontSize = 14.sp)
-            }
-        }
+        // Sử dụng Header composable
+        Header(
+            title = "EatClean",
+            buttonText = "Dùng thử miễn phí",
+            onButtonClick = { /* TODO: Xử lý sự kiện nếu cần */ }
+        )
 
         // Calendar
-        Row(
+//        Row(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(15.dp)
+//                .background(color = Color(0xF3F4F6FF)),
+//            verticalAlignment = Alignment.CenterVertically
+//        ) {
+//            IconButton(
+//                onClick = { viewModel.updateWeekOffset(viewModel.weekOffset.value - 1) },
+//                modifier = Modifier.size(40.dp)
+//            ) {
+//                Icon(
+//                    painter = painterResource(id = R.drawable.left),
+//                    contentDescription = "Previous week",
+//                    tint = Color.Black
+//                )
+//            }
+//            Row(
+//                modifier = Modifier
+//                    .weight(1f)
+//                    .fillMaxWidth(),
+//                horizontalArrangement = Arrangement.SpaceEvenly
+//            ) {
+//                daysOfWeek.forEach { day ->
+//                    val isToday = day.date == currentDate
+//                    Box(
+//                        modifier = Modifier
+//                            .width(40.dp)
+//                            .height(60.dp)
+//                            .padding(horizontal = 4.dp)
+//                            .clip(RoundedCornerShape(10.dp))
+//                            .background(if (isToday) Color(0xFF00B4C4) else Color.LightGray),
+//                        contentAlignment = Alignment.Center
+//                    ) {
+//                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+//                            day.dayOfWeek?.let {
+//                                Text(
+//                                    text = it,
+//                                    color = if (isToday) Color.White else Color.Black,
+//                                    fontSize = 13.sp,
+//                                    textAlign = TextAlign.Center
+//                                )
+//                            }
+//                            Text(
+//                                text = day.dayOfMonth.toString(),
+//                                color = if (isToday) Color.White else Color.Black,
+//                                fontSize = 15.sp,
+//                                fontWeight = FontWeight.Bold,
+//                                textAlign = TextAlign.Center
+//                            )
+//                        }
+//                    }
+//                }
+//            }
+//            IconButton(
+//                onClick = { viewModel.updateWeekOffset(viewModel.weekOffset.value + 1) },
+//                modifier = Modifier.size(40.dp)
+//            ) {
+//                Icon(
+//                    painter = painterResource(id = R.drawable.right),
+//                    contentDescription = "Next week",
+//                    tint = Color.Black
+//                )
+//            }
+//        }
+        Spacer(modifier = Modifier.height(10.dp))
+        CalendarHeatmap(
+            data = mapOf(
+                LocalDate.now() to 3,
+                LocalDate.now().minusDays(1) to 1,
+                LocalDate.now().minusDays(2) to 4
+            ),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(15.dp)
-                .background(color = Color(0xF3F4F6FF)),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(
-                onClick = { viewModel.updateWeekOffset(viewModel.weekOffset.value - 1) },
-                modifier = Modifier.size(40.dp)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.left),
-                    contentDescription = "Previous week",
-                    tint = Color.Black
-                )
-            }
-            Row(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                daysOfWeek.forEach { day ->
-                    val isToday = day.date == currentDate
-                    Box(
-                        modifier = Modifier
-                            .width(40.dp)
-                            .height(60.dp)
-                            .padding(horizontal = 4.dp)
-                            .clip(RoundedCornerShape(10.dp))
-                            .background(if (isToday) Color(0xFF00B4C4) else Color.LightGray),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            day.dayOfWeek?.let {
-                                Text(
-                                    text = it,
-                                    color = if (isToday) Color.White else Color.Black,
-                                    fontSize = 13.sp,
-                                    textAlign = TextAlign.Center
-                                )
-                            }
-                            Text(
-                                text = day.dayOfMonth.toString(),
-                                color = if (isToday) Color.White else Color.Black,
-                                fontSize = 15.sp,
-                                fontWeight = FontWeight.Bold,
-                                textAlign = TextAlign.Center
-                            )
-                        }
-                    }
-                }
-            }
-            IconButton(
-                onClick = { viewModel.updateWeekOffset(viewModel.weekOffset.value + 1) },
-                modifier = Modifier.size(40.dp)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.right),
-                    contentDescription = "Next week",
-                    tint = Color.Black
-                )
-            }
-        }
+                .padding(8.dp)
+        )
 
         // Food Records
         Row(

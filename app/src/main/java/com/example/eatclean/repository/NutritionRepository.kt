@@ -13,9 +13,9 @@ class NutritionRepository {
         emit(
             listOf(
                 Nutrition(1000, 1700, "Calories", "kcal", "#FF6B6B"),
-                Nutrition(300, 1700, "Protein", "kcal", "#3B82F6"),
-                Nutrition(850, 1700, "Chất béo", "kcal", "#EAB308"),
-                Nutrition(0, 1700, "Carb", "kcal", "#4DCB72")
+                Nutrition(300, 1700, "Protein", "g", "#3B82F6"),
+                Nutrition(850, 1700, "Chất béo", "g", "#EAB308"),
+                Nutrition(0, 1700, "Carb", "g", "#4DCB72")
             )
         )
     }

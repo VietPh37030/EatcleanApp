@@ -10,7 +10,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.eatclean.navigations.BottomNavigationBar
 import com.example.eatclean.navigations.BottomNavItem
+import com.example.eatclean.ui.screens.DietPlanScreenContent
 import com.example.eatclean.ui.screens.FollowScreenContent
+
+
 
 
 @Composable
@@ -29,7 +32,7 @@ fun NavGraph() {
                 Text("Màn hình Bac si suc khoe")
             }
             composable(BottomNavItem.Diet.route) {
-                Text("Màn hình Ghi lại")
+                DietPlanScreenContent()
             }
             composable(BottomNavItem.Track.route) {
               FollowScreenContent()
