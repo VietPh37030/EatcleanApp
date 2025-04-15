@@ -54,7 +54,7 @@ fun MealSection(
                 color = Color.Black,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
-            
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly,
@@ -140,6 +140,41 @@ fun MealSection(
             }
 
             Spacer(modifier = Modifier.height(16.dp))
+
+            // New Row with nutritional information with image and spacing
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.omega3), // Thay bằng hình ảnh phù hợp
+                    contentDescription = "Ảnh bữa ăn",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "Protein: ${meal.protein}g",
+                    fontSize = 12.sp,
+                    color = Color(0xFF3B82F6)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "Chất béo: ${meal.fat}g",
+                    fontSize = 12.sp,
+                    color = Color(0xFFEAB308)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "Carbs: ${meal.carbs}g",
+                    fontSize = 12.sp,
+                    color = Color(0xFF4DCB72)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
             meal.items.forEach { item ->
                 Text(
                     text = item.name,
@@ -169,7 +204,7 @@ fun MealSection(
                 color = Color.Black,
                 modifier = Modifier.padding(top = 4.dp)
             )
-            
+
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "★ Lợi ích sức khỏe",
@@ -183,10 +218,10 @@ fun MealSection(
                 color = Color.Black,
                 modifier = Modifier.padding(top = 4.dp)
             )
-            
+
             // Thêm spacing trước các nút
             Spacer(modifier = Modifier.height(16.dp))
-            
+
             // Thêm 2 nút
             Row(
                 modifier = Modifier.fillMaxWidth(),
