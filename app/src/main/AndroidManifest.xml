@@ -13,7 +13,10 @@
         android:theme="@style/Theme.Eatclean"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.theme.screens.test"
+            android:exported="false" />
+        <activity
+            android:name=".ui.theme.screens.ProgressQuesstion"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Eatclean">
