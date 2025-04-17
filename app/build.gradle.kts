@@ -69,4 +69,10 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation("com.google.accompanist:accompanist-pager:0.31.1-alpha")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.31.1-alpha")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+    implementation ("dev.chrisbanes.snapper:snapper:0.2.0")
+
 }
