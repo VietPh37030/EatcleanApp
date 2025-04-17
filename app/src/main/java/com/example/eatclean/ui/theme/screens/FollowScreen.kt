@@ -1,6 +1,7 @@
 package com.example.eatclean.ui.screens
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -22,6 +23,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.eatclean.R
 import com.example.eatclean.repository.FoodRepository
 import com.example.eatclean.repository.NutritionRepository
@@ -30,6 +35,7 @@ import com.example.eatclean.ui.components.Header
 import com.example.eatclean.ui.theme.EatcleanTheme
 import com.example.eatclean.ui.theme.components.CalendarHeatmap
 import com.example.eatclean.ui.theme.components.NutritionItem
+import com.example.eatclean.ui.theme.screens.ProteinScreen
 import com.example.eatclean.viewmodel.FollowScreenViewModel
 import com.example.eatclean.viewmodels.FollowScreenViewModelFactory
 import java.time.LocalDate
@@ -39,8 +45,17 @@ class FollowScreen : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             EatcleanTheme {
-                Surface(modifier = Modifier.fillMaxSize()) {
-                    FollowScreenContent()
+                val navController = rememberNavController() // Tạo NavController
+                NavHost(
+                    navController = navController,
+                    startDestination = "followScreen"
+                ) {
+                    composable("followScreen") {
+                        FollowScreenContent(navController = navController)
+                    }
+                    composable("proteinScreen") {
+                        ProteinScreen(navController = navController)
+                    }
                 }
             }
         }
@@ -49,6 +64,7 @@ class FollowScreen : ComponentActivity() {
 
 @Composable
 fun FollowScreenContent(
+    navController: NavController, // Thêm NavController
     viewModel: FollowScreenViewModel = viewModel(
         factory = FollowScreenViewModelFactory(
             NutritionRepository(),
@@ -76,72 +92,6 @@ fun FollowScreenContent(
             onButtonClick = { /* TODO: Xử lý sự kiện nếu cần */ }
         )
 
-        // Calendar
-//        Row(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(15.dp)
-//                .background(color = Color(0xF3F4F6FF)),
-//            verticalAlignment = Alignment.CenterVertically
-//        ) {
-//            IconButton(
-//                onClick = { viewModel.updateWeekOffset(viewModel.weekOffset.value - 1) },
-//                modifier = Modifier.size(40.dp)
-//            ) {
-//                Icon(
-//                    painter = painterResource(id = R.drawable.left),
-//                    contentDescription = "Previous week",
-//                    tint = Color.Black
-//                )
-//            }
-//            Row(
-//                modifier = Modifier
-//                    .weight(1f)
-//                    .fillMaxWidth(),
-//                horizontalArrangement = Arrangement.SpaceEvenly
-//            ) {
-//                daysOfWeek.forEach { day ->
-//                    val isToday = day.date == currentDate
-//                    Box(
-//                        modifier = Modifier
-//                            .width(40.dp)
-//                            .height(60.dp)
-//                            .padding(horizontal = 4.dp)
-//                            .clip(RoundedCornerShape(10.dp))
-//                            .background(if (isToday) Color(0xFF00B4C4) else Color.LightGray),
-//                        contentAlignment = Alignment.Center
-//                    ) {
-//                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-//                            day.dayOfWeek?.let {
-//                                Text(
-//                                    text = it,
-//                                    color = if (isToday) Color.White else Color.Black,
-//                                    fontSize = 13.sp,
-//                                    textAlign = TextAlign.Center
-//                                )
-//                            }
-//                            Text(
-//                                text = day.dayOfMonth.toString(),
-//                                color = if (isToday) Color.White else Color.Black,
-//                                fontSize = 15.sp,
-//                                fontWeight = FontWeight.Bold,
-//                                textAlign = TextAlign.Center
-//                            )
-//                        }
-//                    }
-//                }
-//            }
-//            IconButton(
-//                onClick = { viewModel.updateWeekOffset(viewModel.weekOffset.value + 1) },
-//                modifier = Modifier.size(40.dp)
-//            ) {
-//                Icon(
-//                    painter = painterResource(id = R.drawable.right),
-//                    contentDescription = "Next week",
-//                    tint = Color.Black
-//                )
-//            }
-//        }
         Spacer(modifier = Modifier.height(10.dp))
         CalendarHeatmap(
             data = mapOf(
@@ -249,7 +199,10 @@ fun FollowScreenContent(
                             currentValue = nutrition.currentValue,
                             targetValue = nutrition.targetValue,
                             label = nutrition.label,
-                            color = Color(android.graphics.Color.parseColor(nutrition.progressColor))
+                            color = Color(android.graphics.Color.parseColor(nutrition.progressColor)),
+                            onClick = {
+                                navController.navigate("proteinScreen")
+                            }
                         )
                     }
                 }
@@ -263,7 +216,11 @@ fun FollowScreenContent(
                             currentValue = nutrition.currentValue,
                             targetValue = nutrition.targetValue,
                             label = nutrition.label,
-                            color = Color(android.graphics.Color.parseColor(nutrition.progressColor))
+                            color = Color(android.graphics.Color.parseColor(nutrition.progressColor)),
+                            onClick = {
+                                navController.navigate("proteinScreen")
+
+                            }
                         )
                     }
                 }

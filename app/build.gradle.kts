@@ -37,9 +37,12 @@ android {
     buildFeatures {
         compose = true
     }
+
 }
 
 dependencies {
+    implementation ("org.jetbrains.kotlin:kotlin-reflect:1.9.22") // Phiên bản mới nhất tại thời điểm hiện tại
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("androidx.navigation:navigation-compose:2.8.9")
     implementation("androidx.compose.foundation:foundation:1.7.8")
     implementation("androidx.compose.ui:ui:1.7.8")
@@ -57,6 +60,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.navigation.runtime.android)
+    implementation(libs.generativeai)
+    implementation(libs.androidx.room.runtime.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

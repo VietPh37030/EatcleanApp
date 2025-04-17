@@ -2,6 +2,7 @@ package com.example.eatclean.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -24,7 +25,8 @@ fun CircularNutri(
     targetValue: Int,
     label: String,
     color: Color,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
 ) {
     val progress = if (targetValue > 0) {
         (currentValue.toFloat() / targetValue.toFloat()).coerceIn(0f, 1f)
@@ -34,7 +36,7 @@ fun CircularNutri(
     val sweepAngle = 360f * progress
 
     Column(
-        modifier = modifier,
+        modifier = modifier.clickable(onClick=onClick),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
