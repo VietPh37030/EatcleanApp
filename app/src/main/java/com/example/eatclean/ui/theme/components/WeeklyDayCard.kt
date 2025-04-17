@@ -108,10 +108,10 @@ fun MealRow(meal: MealSummary) {
     ) {
         // Biểu tượng cho bữa ăn
         val icon = when (meal.mealType) {
-            "Bữa sáng" -> painterResource(id = R.drawable.fat)
-            "Bữa trưa" -> painterResource(id = R.drawable.fat)
-            "Bữa tối" -> painterResource(id = R.drawable.fat)
-            "Ăn vặt" -> painterResource(id = R.drawable.fat)
+            "Bữa sáng" -> painterResource(id = R.drawable.moring)
+            "Bữa trưa" -> painterResource(id = R.drawable.lunch)
+            "Bữa tối" -> painterResource(id = R.drawable.evening)
+            "Ăn vặt" -> painterResource(id = R.drawable.snack)
             else -> painterResource(id = R.drawable.heart) // bạn có thể thêm 1 ảnh mặc định
         }
 
