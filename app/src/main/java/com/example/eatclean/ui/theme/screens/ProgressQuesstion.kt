@@ -33,7 +33,9 @@ import com.google.accompanist.pager.*
 import androidx.compose.foundation.Image
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.eatclean.R
+import com.example.eatclean.viewmodels.OnboardingViewModel
 import kotlinx.coroutines.CoroutineScope
 
 
@@ -46,7 +48,9 @@ class ProgressQuesstion : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    ViewPagerScreen()
+                    // MVVM: Tạo ViewModel và truyền vào ViewPagerScreen
+                    val viewModel: OnboardingViewModel = viewModel()
+                    ViewPagerScreen(viewModel)
                 }
             }
         }
@@ -56,23 +60,31 @@ class ProgressQuesstion : ComponentActivity() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewProgressBarScreen() {
-    ViewPagerScreen()
+    val viewModel: OnboardingViewModel = viewModel()
+    ViewPagerScreen(viewModel)
 }
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun ViewPagerScreen() {
+fun ViewPagerScreen(
+    viewModel: OnboardingViewModel
+) {
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
 
     var progress by remember { mutableStateOf(0.1f) }
     val totalPages = 3 // Số lượng câu hỏi
-
+    // MVVM: Sử dụng collectAsState để theo dõi thay đổi từ ViewModel
+    val uiState = viewModel.uiState.collectAsState().value
     val animatedProgress by animateFloatAsState(
         targetValue = progress,
         animationSpec = tween(durationMillis = 500),
         label = "progressAnimation"
     )
+    // MVVM: Theo dõi thay đổi trang để cập nhật ViewModel
+    LaunchedEffect(pagerState.currentPage) {
+        viewModel.updateCurrentPage(pagerState.currentPage, 3)
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
         Box(
@@ -84,7 +96,7 @@ fun ViewPagerScreen() {
             contentAlignment = Alignment.CenterStart
         ) {
             LinearProgressIndicator(
-                progress = progress,
+                progress = uiState.progress,
                 modifier = Modifier.fillMaxSize(),
                 color = Color.Magenta,
                 trackColor = Color.LightGray
@@ -101,9 +113,12 @@ fun ViewPagerScreen() {
                 contentDescription = "Back",
                 modifier = Modifier
                     .align(Alignment.TopStart) // Căn icon về bên trái
-                    .clickable {  updateProgressAndPreviousPage(pagerState, coroutineScope, totalPages) {
-                        progress = it
-                    }}
+                    .clickable {  // MVVM: Sử dụng ViewModel để xử lý logic quay lại
+                        viewModel.previousPage()
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(viewModel.uiState.value.currentPage)
+                        }
+                    }
             )
 
             // Column nằm giữa toàn bộ màn hình
@@ -148,8 +163,10 @@ fun ViewPagerScreen() {
             userScrollEnabled = false // <-- Chỉ cho chuyển khi bấm nút hoặc icon
         ) { page ->
             when (page) {
-                0 -> ScreenContent3()
-                1 -> ScreenContent4()
+                // MVVM: Truyền ViewModel vào các màn hình con
+                0 -> ScreenAge(viewModel)
+                1 -> ScreenBMI_Weight(viewModel)
+                // Thêm các màn hình khác nếu cần
             }
         }
 
@@ -160,9 +177,11 @@ fun ViewPagerScreen() {
             contentAlignment = Alignment.Center
         ) {
             Button(
-                onClick = { updateProgressAndNextPage(pagerState, coroutineScope, totalPages, 0.1f) {
-                    progress = it
-                }},
+                onClick = { // MVVM: Sử dụng ViewModel để xử lý logic chuyển trang
+                    viewModel.nextPage(3)
+                    coroutineScope.launch {
+                        pagerState.animateScrollToPage(viewModel.uiState.value.currentPage)
+                    }},
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF4CAF50)
                 ),
